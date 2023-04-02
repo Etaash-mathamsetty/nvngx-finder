@@ -23,7 +23,8 @@ fn get_dlerror<'a>() -> &'a str
     }
 }
 
-fn main() {
+fn main() 
+{
     let nvngx_lib = CString::new("libGLX_nvidia.so.0").expect("failed to create CString");
     let nvngx = unsafe { dlopen(nvngx_lib.as_ptr(), RTLD_NOW) };
 
