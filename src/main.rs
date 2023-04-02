@@ -32,7 +32,7 @@ fn main() {
         panic!("dlopen failed {}", get_dlerror());
     }
 
-    let mut info: *mut c_void = null_mut();
+    let mut info: *mut LinkMap = null_mut();
     let ret: i32 = unsafe { dlinfo(nvngx, RTLD_DI_LINKMAP, transmute(&mut info)) };
 
     if ret != 0
@@ -40,9 +40,7 @@ fn main() {
         panic!("dlinfo failed with ret {:?} {}", ret, get_dlerror());
     }
 
-    let link_map: *mut LinkMap =  info as *mut LinkMap;
-
-    let mut path = unsafe { Path::new(CStr::from_ptr((*link_map).l_name).to_str().expect("failed to convert to str")) };
+    let mut path = unsafe { Path::new(CStr::from_ptr((*info).l_name).to_str().expect("failed to convert to str")) };
     path = path.parent().expect("failed to get parent directory");
 
     println!("{}", path.to_str().expect("failed to unwrap path"));
