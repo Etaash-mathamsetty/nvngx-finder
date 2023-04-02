@@ -18,14 +18,14 @@ struct LinkMap
 fn get_dlerror<'a>() -> &'a str 
 {
     unsafe {
-        let err: *mut i8 = dlerror();
+        let err = dlerror();
         return CStr::from_ptr(err).to_str().expect("failed to convert to str")
     }
 }
 
 fn main() {
     let nvngx_lib = CString::new("libGLX_nvidia.so.0").expect("failed to create CString");
-    let nvngx: *mut c_void = unsafe { dlopen(nvngx_lib.as_ptr(), RTLD_NOW) };
+    let nvngx = unsafe { dlopen(nvngx_lib.as_ptr(), RTLD_NOW) };
 
     if nvngx.is_null()
     {
@@ -33,7 +33,7 @@ fn main() {
     }
 
     let mut info: *mut LinkMap = null_mut();
-    let ret: i32 = unsafe { dlinfo(nvngx, RTLD_DI_LINKMAP, transmute(&mut info)) };
+    let ret = unsafe { dlinfo(nvngx, RTLD_DI_LINKMAP, transmute(&mut info)) };
 
     if ret != 0
     {
