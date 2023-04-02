@@ -17,8 +17,13 @@ struct LinkMap
 
 fn get_dlerror<'a>() -> &'a str 
 {
-    unsafe {
+    unsafe 
+    {
         let err = dlerror();
+        if err.is_null()
+        {
+            return "No Error";
+        }
         return CStr::from_ptr(err).to_str().expect("failed to convert to str")
     }
 }
