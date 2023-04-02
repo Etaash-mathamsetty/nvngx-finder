@@ -15,13 +15,21 @@ struct LinkMap
     l_prev: *mut LinkMap,
 }
 
+fn get_dlerror<'a>() -> &'a str 
+{
+    unsafe {
+        let err: *mut i8 = dlerror();
+        return CStr::from_ptr(err).to_str().expect("failed to convert to str")
+    }
+}
+
 fn main() {
     let nvngx_lib = CString::new("libGLX_nvidia.so.0").expect("failed to create CString");
     let nvngx: *mut c_void = unsafe { dlopen(nvngx_lib.as_ptr(), RTLD_NOW) };
 
     if nvngx.is_null()
     {
-        unsafe { panic!("dlopen failed {}", CStr::from_ptr(dlerror()).to_str().expect("failed to convert to str")) };
+        panic!("dlopen failed {}", get_dlerror());
     }
 
     let mut info: *mut c_void = null_mut();
@@ -29,7 +37,7 @@ fn main() {
 
     if ret != 0
     {
-        panic!("dlinfo failed with ret {:?}", ret);
+        panic!("dlinfo failed with ret {:?} {}", ret, get_dlerror());
     }
 
     let link_map: *mut LinkMap =  info as *mut LinkMap;
