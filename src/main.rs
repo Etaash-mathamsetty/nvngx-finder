@@ -5,13 +5,14 @@ use std::mem::transmute;
 use std::path::Path;
 
 #[allow(dead_code)]
+#[repr(C)]
 struct LinkMap
 {
-    j1: *mut c_void,
+    l_addr: *mut c_void,
     l_name: *mut i8,
-    j2: *mut c_void,
-    next: *mut LinkMap,
-    prev: *mut LinkMap,
+    l_ld: *mut c_void,
+    l_next: *mut LinkMap,
+    l_prev: *mut LinkMap,
 }
 
 fn main() {
