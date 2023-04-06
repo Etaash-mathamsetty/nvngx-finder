@@ -1,0 +1,27 @@
+{
+  "name": "nvngx-finder",
+  "version": "0.3.0",
+  "description": "",
+  "main": "index.node",
+  "types": "src/lib.d.ts",
+  "scripts": {
+    "build": "cargo-cp-artifact -nc index.node -- cargo build --message-format=json-render-diagnostics",
+    "build-debug": "yarn run build",
+    "build-release": "yarn run build --release",
+    "install": "yarn run build-release",
+    "test": "cargo test"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "cargo-cp-artifact": "^0.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Etaash-mathamsetty/nvngx-finder.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Etaash-mathamsetty/nvngx-finder/issues"
+  },
+  "homepage": "https://github.com/Etaash-mathamsetty/nvngx-finder#readme"
+}

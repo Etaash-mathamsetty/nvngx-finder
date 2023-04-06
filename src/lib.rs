@@ -3,6 +3,7 @@ use libc::{dlopen, dlinfo, dlerror, RTLD_NOW, RTLD_DI_LINKMAP, c_void};
 use std::ptr::null_mut;
 use std::mem::transmute;
 use std::path::Path;
+use neon::prelude::*;
 
 #[allow(dead_code)]
 #[repr(C)]
@@ -28,8 +29,7 @@ fn get_dlerror<'a>() -> &'a str
     }
 }
 
-fn main() 
-{
+fn get_nvidia_glx_path(mut cx: FunctionContext) -> JsResult<JsString> {
     let nvngx_lib = CString::new("libGLX_nvidia.so.0").expect("failed to create CString");
     let nvngx = unsafe { dlopen(nvngx_lib.as_ptr(), RTLD_NOW) };
 
@@ -49,5 +49,14 @@ fn main()
     let mut path = unsafe { Path::new(CStr::from_ptr((*info).l_name).to_str().expect("failed to convert to str")) };
     path = path.parent().expect("failed to get parent directory");
 
-    println!("{}", path.to_str().expect("failed to unwrap path"));
+    // this returns the path as jsstring
+    Ok(cx.string(path.to_str().expect("")))
 }
+
+#[neon::main]
+fn main(mut cx: ModuleContext) -> NeonResult<()> {
+    cx.export_function("get", get_nvidia_glx_path)?;
+    Ok(())
+}
+
+
