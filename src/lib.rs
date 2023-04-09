@@ -1,5 +1,5 @@
 use std::ffi::{CString, CStr};
-use libc::{dlopen, dlinfo, dlerror, RTLD_NOW, RTLD_DI_LINKMAP, c_void};
+use libc::{dlopen, dlinfo, dlerror, dlclose, RTLD_NOW, RTLD_DI_LINKMAP, c_void};
 use std::ptr::null_mut;
 use std::mem::transmute;
 use std::path::Path;
@@ -48,6 +48,8 @@ fn get_nvidia_glx_path(mut cx: FunctionContext) -> JsResult<JsString> {
 
     let mut path = unsafe { Path::new(CStr::from_ptr((*info).l_name).to_str().expect("failed to convert to str")) };
     path = path.parent().expect("failed to get parent directory");
+
+    unsafe { dlclose(nvngx); }
 
     // this returns the path as jsstring
     Ok(cx.string(path.to_str().expect("")))
