@@ -1,12 +1,20 @@
 [package]
-name = "nvngx_finder"
-version = "0.1.0"
+name = "nvngx-finder"
+version = "0.3.0"
+license = "ISC"
 edition = "2021"
-
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+exclude = ["index.node"]
 
 [dependencies]
 libc = "0.2.140"
 
+[dependencies.neon]
+version = "0.10"
+default-features = false
+features = ["napi-6"]
+
 [profile.release]
 strip=true
+
+[lib]
+crate-type = ["cdylib"]
