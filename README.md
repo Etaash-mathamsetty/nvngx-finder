@@ -1,6 +1,6 @@
 # nvngx-finder
 
-This project was bootstrapped by [create-neon](https://www.npmjs.com/package/create-neon).
+This project was bootstrapped by [create-neon](https://www.npmjs.com/package/create-neon).  
 This project finds nvngx.dll, so that game launchers written in TS can find it and use it for enabling DXVK-NVAPI with DLSS support. 
 
 ## Installing nvngx-finder
