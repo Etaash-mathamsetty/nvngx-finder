@@ -57,7 +57,7 @@ fn get_nvidia_glx_path(mut cx: FunctionContext) -> JsResult<JsString> {
 
 #[neon::main]
 fn main(mut cx: ModuleContext) -> NeonResult<()> {
-    cx.export_function("get", get_nvidia_glx_path)?;
+    cx.export_function("getNvngxPath", get_nvidia_glx_path)?;
     Ok(())
 }
 
