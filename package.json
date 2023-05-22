@@ -1,6 +1,6 @@
 {
   "name": "nvngx-finder",
-  "version": "0.3.7",
+  "version": "0.3.8",
   "description": "Finds the path to nvngx.dll",
   "main": "index.node",
   "types": "src/lib.d.ts",
