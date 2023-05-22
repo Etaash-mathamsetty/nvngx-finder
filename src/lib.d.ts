@@ -1,3 +1,3 @@
 declare module 'nvngx-finder' {
-    export function get(): string;
+    export function getNvngxPath(): string;
   }
