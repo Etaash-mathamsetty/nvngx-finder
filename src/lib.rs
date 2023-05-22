@@ -1,4 +1,5 @@
 use std::ffi::{CString, CStr};
+#[cfg(target_os = "linux")]
 use libc::{dlopen, dlinfo, dlerror, dlclose, RTLD_NOW, RTLD_DI_LINKMAP, c_void};
 use std::ptr::null_mut;
 use std::mem::transmute;
@@ -16,6 +17,7 @@ struct LinkMap
     l_prev: *mut LinkMap,
 }
 
+#[cfg(target_os = "linux")]
 fn get_dlerror<'a>() -> &'a str 
 {
     unsafe 
@@ -29,6 +31,7 @@ fn get_dlerror<'a>() -> &'a str
     }
 }
 
+#[cfg(target_os = "linux")]
 fn get_nvidia_glx_path(mut cx: FunctionContext) -> JsResult<JsString> {
     let nvngx_lib = CString::new("libGLX_nvidia.so.0").expect("failed to create CString");
     let nvngx = unsafe { dlopen(nvngx_lib.as_ptr(), RTLD_NOW) };
@@ -53,6 +56,11 @@ fn get_nvidia_glx_path(mut cx: FunctionContext) -> JsResult<JsString> {
 
     // this returns the path as jsstring
     Ok(cx.string(path.to_str().expect("")))
+}
+
+#[cfg(not(target_os = "linux"))]
+fn get_nvidia_glx_path(mut cx: FunctionContext) -> JsResult<JsString> {
+    Ok(cx.string(""))
 }
 
 #[neon::main]
