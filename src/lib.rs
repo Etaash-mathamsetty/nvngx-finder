@@ -1,12 +1,15 @@
+#![allow(dead_code)]
+
 use std::ffi::{CString, CStr};
 #[cfg(target_os = "linux")]
 use libc::{dlopen, dlinfo, dlerror, dlclose, RTLD_NOW, RTLD_DI_LINKMAP, c_void};
+#[cfg(not(target_os = "linux"))]
+use libc::{c_void};
 use std::ptr::null_mut;
 use std::mem::transmute;
 use std::path::Path;
 use neon::prelude::*;
 
-#[allow(dead_code)]
 #[repr(C)]
 struct LinkMap
 {
@@ -68,5 +71,3 @@ fn main(mut cx: ModuleContext) -> NeonResult<()> {
     cx.export_function("getNvngxPath", get_nvidia_glx_path)?;
     Ok(())
 }
-
-
